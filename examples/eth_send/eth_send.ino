@@ -15,7 +15,8 @@ const char PRIVATE_KEY[] = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
                             0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
                             0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
                             0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 };
-Web3 web3(INFURA_HOST, INFURA_PATH);
+
+Web3 web3((string *)INFURA_HOST, (string *)INFURA_PATH);
 
 void eth_send_example();
 
@@ -47,9 +48,9 @@ void loop() {
 }
 
 void eth_send_example() {
-    Contract contract(&web3, CONTRACT_ADDRESS);
+    Contract contract(&web3, (string *)CONTRACT_ADDRESS);
     contract.SetPrivateKey((uint8_t*)PRIVATE_KEY);
-    uint32_t nonceVal = (uint32_t)web3.EthGetTransactionCount((char *)MY_ADDRESS);
+    uint32_t nonceVal = (uint32_t)web3.EthGetTransactionCount((string *)MY_ADDRESS);
 
     uint32_t gasPriceVal = 141006540;
     uint32_t  gasLimitVal = 3000000;
@@ -59,7 +60,7 @@ void eth_send_example() {
     memset(dataStr, 0, 100);
     string func = "set(uint256)";
     string p = contract.SetupContractData(&func, 123);
-    string result = contract.SendTransaction(nonceVal, gasPriceVal, gasLimitVal, &toStr, &valueStr, &p);
-
-    USE_SERIAL.println(result);
+    string result = contract.SendTransaction(nonceVal, gasPriceVal, gasLimitVal, (string *)toStr, (string *)valueStr, &p);
+    // still figuring how to print this ~~~~~~~~
+   // Serial.println((String *)result);
 }
